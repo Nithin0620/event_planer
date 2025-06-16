@@ -177,7 +177,7 @@ exports.sendOtp = async(req,res)=>{
 
          result = Otp.findOne({otp:otp});  
       }
-      const otpBody = await Otp.create({email,otp});
+      const otpBody = await Otp.create({otp,email});
 
       return res.status(200).json({
          success:true,
@@ -192,3 +192,9 @@ exports.sendOtp = async(req,res)=>{
       });
    }
 }
+
+
+
+
+
+//change password controller rehta he banana

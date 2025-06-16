@@ -16,5 +16,22 @@ const otpSchema = new mongoose.Schema({
    }
 })
 
+const sendVerificationemail= async (email,otp)=>{
+   try{
+      const mailResponse = await 
+   }
+   catch(e){
+      console.log("Error occured in sending verification email for otp in otp schema",e);
+   }
+}
+
+
+otpSchema.pre("save", async function(next){
+   if(this.isNew){
+      await sendVerificationemail(this.email,this.otp);
+   }
+   next();
+})
+
 
 module.exports = mongoose.model("Otp",otpSchema);
