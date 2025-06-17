@@ -195,7 +195,4 @@ exports.sendOtp = async(req,res)=>{
 }
 
 
-
-
-
 //change password controller rehta he banana

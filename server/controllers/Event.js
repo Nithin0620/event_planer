@@ -1,6 +1,7 @@
 const Event = require("../modals/Event");
 const User = require("../modals/User")
 const { findByIdAndUpdate, findById } = require("../modals/Otp");
+const Category = require("../modals/Category");
 
 
 exports.createEvent = async(req,res)=>{
@@ -58,7 +59,7 @@ exports.createEvent = async(req,res)=>{
 exports.getallEvent = async(req,res)=>{
    try{
       
-      const response = await Event.find({});
+      const response = await Event.find({}).populate("createdBy").populate("category").exec();
       if(!response){
          return res.status(400).json({
             success:false,
@@ -94,7 +95,7 @@ exports.getEventById = async(req,res)=>{
          })
       }
 
-      const response =await Event.find({id:id});
+      const response =await Event.findById(id).populate("createdBy").populate("category").exec();
       if(!response){
          return res.status(400).json({
             success:false,
@@ -102,7 +103,7 @@ exports.getEventById = async(req,res)=>{
          })
       }
       return res.status(200).json({
-         success:false,
+         success:true,
          message:"data of event by id retrived successfully",
          data:response,
       })
@@ -224,3 +225,63 @@ exports.deleteEvent = async(req,res)=>{
       })
    }
 }
+
+
+exports.getEventForCategory = async(req,res)=>{
+   try{
+      const category = req.params.category;
+
+      if(!category){
+         return res.status(400).json({
+            success:false,
+            message:"can't retrive category from body"
+         })
+      }
+
+      const response = await Category.find({category}).populate("events").exec();
+
+      return res.status(200).josn({
+         success:true,
+         message:"category retrived successfully",
+         data:response
+      })
+   }
+   catch(e){
+      console.log(e);
+      return res.status(500).josn({
+         success:false,
+         message:"Error occured in getEventforCategory controller",
+         data:null
+      })
+   }
+}
+
+
+exports.getMyEvent = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    if(!userId){
+      return res.status(401).json({
+         success:false,
+         message:"please login first to retirve myEvent data"
+      })
+    }
+
+    const response = await User.findById(userId)
+      .populate("events") 
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      message: "My events retrieved successfully",
+      data: response.events,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      success: false,
+      message: "Error occurred in getMyEvent controller while retrieving events from user schema",
+    });
+  }
+};

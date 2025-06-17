@@ -6,7 +6,9 @@ const {
    getallEvent,
    getEventById,
    updateEvent,
-   deleteEvent
+   deleteEvent,
+   getEventForCategory,
+   getMyEvent
 } = require("../controllers/Event");
 const { verifyToken } = require("../middleware/VerifyToken");
 
@@ -20,6 +22,10 @@ router.get("/geteventbyid/:id",verifyToken,getEventById);
 router.put("/updateevent/:id",verifyToken , updateEvent);
 
 router.delete("/deleteevent",verifyToken , deleteEvent);
+
+router.get("/geteventforcategory/:category",getEventForCategory);
+
+router.get("/getmyevent",verifyToken,getMyEvent);
 
 
 module.exports = router ;

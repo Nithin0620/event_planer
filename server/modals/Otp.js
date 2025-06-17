@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const sendEmail = require("../urility/mailSender")
+const mailTamplet  = require("../Tamplets/mailTamplet")
 
 const otpSchema = new mongoose.Schema({
    otp:{
@@ -18,7 +20,12 @@ const otpSchema = new mongoose.Schema({
 
 const sendVerificationemail= async (email,otp)=>{
    try{
-      const mailResponse = await 
+      const mailResponse = await sendEmail(
+         email,
+         "Verification email",
+         mailTamplet(otp),
+      )
+      return mailResponse;
    }
    catch(e){
       console.log("Error occured in sending verification email for otp in otp schema",e);
