@@ -1,5 +1,58 @@
 const Event = require("../modals/Event");
-const { findByIdAndUpdate } = require("../modals/Otp");
+const User = require("../modals/User")
+const { findByIdAndUpdate, findById } = require("../modals/Otp");
+
+
+exports.createEvent = async(req,res)=>{
+   try{
+      const {
+         eventName,
+         description,
+         location,
+         date,
+         time,
+         category,
+         mode,
+         
+      }=req.body;
+
+      const createdBy = req.user.id;
+
+      if(!eventName || !description ||! location ||!date || !time || !category ||!mode || ! createdBy){
+         return res.status(400).json({
+            success:false,
+            message:"ALl fields are required to create new event"
+         })
+      }
+      const payload = {eventName,
+      description,
+      location,
+      date,
+      time,
+      category,
+      mode,
+      createdBy};
+
+      const response = await Event.create(payload);
+
+      const pushEventintoUser = await User.findByIdAndUpdate(createdBy , {$push :{events:response._id}},{new:true});
+
+      return res.status(201).json({
+         success: true,
+         message: "Event created successfully",
+         data: response
+      });
+
+   } 
+   catch (error) {
+      console.log(error);
+      return res.status(500).json({
+         success: false,
+         message: "Failed to create event",
+         error: error.message
+      });
+   }
+}
 
 
 exports.getallEvent = async(req,res)=>{
@@ -27,11 +80,21 @@ exports.getallEvent = async(req,res)=>{
    }
 }
 
+
 exports.getEventById = async(req,res)=>{
    try{
       const id = req.params._id;
 
-      const response = Event.find({id:id});
+      const currentUser = req.user.id;
+      
+      if(!currentUser){
+         return res.status(401).json({
+            success:false,
+            message:"Please Login first to get more details about this Event"
+         })
+      }
+
+      const response =await Event.find({id:id});
       if(!response){
          return res.status(400).json({
             success:false,
@@ -54,104 +117,95 @@ exports.getEventById = async(req,res)=>{
 }
 
 
-exports.createEvent = async(req,res)=>{
-   try{
-      const {
-         eventName,
-         description,
-         location,
-         date,
-         time,
-         category,
-         mode,
-         createdBy
-      }=req.body;
-
-      if(!eventName || !description ||! location ||!date || !time || !category ||!mode || ! createdBy){
-         return res.status(400).json({
-            success:false,
-            message:"ALl fields are required to create new event"
-         })
-      }
-      const payload = {eventName,
+exports.updateEvent = async (req, res) => {
+  try {
+    const _id = req.params._id;
+    const {
+      eventName,
       description,
       location,
       date,
       time,
       category,
       mode,
-      createdBy};
+    } = req.body;
 
-      const response = await Event.create(payload);
+    const currentUser = req.user.id;
 
-      return res.status(201).json({
-         success: true,
-         message: "Event created successfully",
-         data: response
+    const event = await Event.findById(_id);
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
       });
+    }
 
-   } 
-   catch (error) {
-      console.log(error);
-      return res.status(500).json({
-         success: false,
-         message: "Failed to create event",
-         error: error.message
+    if (event.createdBy.toString() !== currentUser) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this event",
       });
-   }
-}
+    }
 
-exports.updateEvent = async(req,res)=>{
-   try{
-      const _id = req.params._id;
-      const {eventName,
-         description,
-         location,
-         date,
-         time,
-         category,
-         mode
-      } = req.body;
-
-      if(!eventName || !description ||! location ||!date || !time || !category ||!mode ){
-         return res.status(400).json({
-            success:false,
-            message:"ALl fields are required to edit event"
-         })
-      }
-
-      const payload = {
-         eventName,
-         description,
-         location,
-         date,
-         time,
-         category,
-         mode,
-         updatedAt:Date.now()
-      }
-      const response = findByIdAndUpdate({id:_id}, payload,{new:true});
-
-      return res.status(201).json({
-         success: true,
-         message: "Event updated successfully",
-         data: response
+    if (!eventName || !description || !location || !date || !time || !category || !mode) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required to edit the event",
       });
+    }
 
-   } 
-   catch (error) {
-      console.log(error);
-      return res.status(500).json({
-         success: false,
-         message: "Failed to update event",
-         error: error.message
-      });
-   }
-}
+    const payload = {
+      eventName,
+      description,
+      location,
+      date,
+      time,
+      category,
+      mode,
+      updatedAt: Date.now(),
+    };
+
+    const updatedEvent = await Event.findByIdAndUpdate(_id, payload, { new: true });
+
+    return res.status(200).json({
+      success: true,
+      message: "Event updated successfully",
+      data: updatedEvent,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update event",
+      error: error.message,
+    });
+  }
+};
+
 
 exports.deleteEvent = async(req,res)=>{
    try{
       const _id = req.params._id;
+
+      const currentUser = req.user.id;
+
+      const event = await Event.findById(_id);
+
+      if(!event){
+         return req.status(400).json({
+            success:false,
+            message:"Event Not found"
+         })
+      }
+
+      if(event.createdBy.toString() !== currentUser){
+         return res.status(401).json({
+            success:false,
+            message:"You are not authorized to delete this Event"
+         })
+      }
 
       const response =await Event.findByIdAndDelete(_id);
 
