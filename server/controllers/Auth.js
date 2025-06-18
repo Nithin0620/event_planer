@@ -98,7 +98,7 @@ exports.login = async(req,res)=>{
          })
       }
 
-      const USER = await User.findOne({email:email});
+      const USER = await User.findOne({email:email}).populate("events").exec();
       if(!USER){
          return res.status(400).json({
             success:false,

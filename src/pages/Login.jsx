@@ -11,18 +11,20 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    
+    console.log("Login:", { email, password });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-300 via-pink-300 to-blue-300">
-      <div className="bg-white/20 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-[90%] max-w-md">
-        <div className="flex justify-center mb-4">
-          <div className="rounded-full bg-[#122B49] p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-300 via-pink-300 to-blue-300 px-4 py-8">
+      <div className="bg-white/20 backdrop-blur-lg p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
+        {/* Avatar Icon */}
+        <div className="flex justify-center mb-6">
+          <div className="rounded-full bg-[#122B49] p-4 shadow-md">
             <BsPerson className="text-white text-3xl" />
           </div>
         </div>
 
+        {/* Email Input */}
         <div className="flex items-center gap-2 bg-white/30 p-2 rounded-md mb-4">
           <GoPersonFill className="text-[#122B49]" />
           <input
@@ -31,10 +33,11 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email ID"
-            className="bg-transparent outline-none w-full text-[#122B49] placeholder-[#122B49]"
+            className="bg-transparent outline-none w-full text-[#122B49] placeholder-[#122B49] text-sm"
           />
         </div>
 
+        {/* Password Input */}
         <div className="flex items-center bg-white/30 p-2 rounded-md mb-4">
           <TbLockPassword className="text-[#122B49]" />
           <input
@@ -43,7 +46,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="bg-transparent outline-none w-full ml-2 text-[#122B49] placeholder-[#122B49]"
+            className="bg-transparent outline-none w-full ml-2 text-[#122B49] placeholder-[#122B49] text-sm"
           />
           <div
             onClick={() => setShowPassword(!showPassword)}
@@ -53,7 +56,8 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="flex justify-between items-center text-sm mb-6 text-[#122B49]">
+        {/* Remember Me and Forgot Password */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm mb-6 text-[#122B49] gap-2 sm:gap-0">
           <label className="flex items-center gap-1">
             <input
               type="checkbox"
@@ -65,14 +69,13 @@ const Login = () => {
           <button className="hover:underline">Forgot Password?</button>
         </div>
 
-        <div>
-          <button
-            onClick={handleLogin}
-            className="w-full bg-[#122B49] text-white py-2 rounded-full hover:bg-[#0f223b] transition"
-          >
-            LOGIN
-          </button>
-        </div>
+        {/* Submit Button */}
+        <button
+          onClick={handleLogin}
+          className="w-full bg-[#122B49] text-white py-2 rounded-full hover:bg-[#0f223b] transition"
+        >
+          LOGIN
+        </button>
       </div>
     </div>
   );

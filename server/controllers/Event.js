@@ -36,6 +36,8 @@ exports.createEvent = async(req,res)=>{
 
       const response = await Event.create(payload);
 
+      await Category.findOneAndUpdate({categoryName:category},{$push :{events:response._id}},{new:true});
+
       const pushEventintoUser = await User.findByIdAndUpdate(createdBy , {$push :{events:response._id}},{new:true});
 
       return res.status(201).json({
