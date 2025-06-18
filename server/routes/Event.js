@@ -21,7 +21,7 @@ router.get("/geteventbyid/:id",verifyToken,getEventById);
 
 router.put("/updateevent/:id",verifyToken , updateEvent);
 
-router.delete("/deleteevent",verifyToken , deleteEvent);
+router.delete("/deleteevent/:id",verifyToken , deleteEvent);
 
 router.get("/geteventforcategory/:category",getEventForCategory);
 
