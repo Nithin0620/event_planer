@@ -6,6 +6,7 @@ const initialState = {
    heroPagemodal:false,
    knowmoremodal:false,
    updatemodal:false,
+   knowmoredata:null
 }
 
 const  modalSlice = createSlice({
@@ -23,6 +24,9 @@ const  modalSlice = createSlice({
       },
       setknowmoremodal(state,action){
          state.knowmoremodal = action.payload;
+      },
+      setknowmoredata(state,action){
+         state.knowmoredata = action.payload;
       },
       setupdatemodal(state,action){
          state.updatemodal = action.payload;

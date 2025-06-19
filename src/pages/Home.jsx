@@ -4,6 +4,11 @@ import { setcreateEventmodal, setMyEventmodal } from '../Reducer/slices/modalSli
 import toast from 'react-hot-toast';
 import { getAllEventfunction, getEventByCategoryfunction } from '../services/operations/Event';
 import EventCard from '../components/EventCard';
+import Knowmoremodal from '../components/Knowmoremodal';
+import Heromodal from ".../components/Heromodal" ;
+import Createeventmodal from "../components/Createeventmodal"
+import Updatemodal from '../components/Updatemodal';
+import Myeventsmodal from '../components/Myeventsmodal';
 
 const Home = () => {
   const [category, setCategory] = useState("All");
@@ -12,6 +17,9 @@ const Home = () => {
   const [upcoming, setUpcoming] = useState([]);
   const [past, setPast] = useState([]);
   const { token } = useSelector((state) => state.auth);
+  const {knowmoremodal , heroPagemodal , createEventmodal , updatemodal , MyEventmodal} = useSelector((state)=> state.modal)
+
+  
 
   const categories = ["All", "Conference", "Workshop", "Webinar", "Hackathon", "Meetup"];
 
@@ -96,58 +104,65 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-orange-50 text-gray-800">
       {/* Top Bar */}
-      <div className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
-        <h1 className="text-2xl font-bold">Event Planner</h1>
-        <div className="space-x-2">
-          <button onClick={handleMyEventClick} className="px-4 py-2 bg-orange-200 rounded hover:bg-orange-300">My Events</button>
-          <button onClick={handleCreateEventClick} className="px-4 py-2 bg-orange-200 rounded hover:bg-orange-300">Add Event</button>
-        </div>
-      </div>
-
-      {/* Tabs & Filters */}
-      <div className="p-4 md:flex md:items-center md:justify-between">
-        {/* Timeline Tabs */}
-        <div className="flex space-x-4 mb-4 md:mb-0">
-          <button
-            className={`px-4 py-2 rounded ${timeline === "past" ? "bg-orange-300" : "bg-orange-100"}`}
-            onClick={() => setTimeline("past")}
-          >
-            Past
-          </button>
-          <button
-            className={`px-4 py-2 rounded ${timeline === "upcoming" ? "bg-orange-300" : "bg-orange-100"}`}
-            onClick={() => setTimeline("upcoming")}
-          >
-            Upcoming
-          </button>
+      <div>
+        <div className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
+          <h1 className="text-2xl font-bold">Event Planner</h1>
+          <div className="space-x-2">
+            <button onClick={handleMyEventClick} className="px-4 py-2 bg-orange-200 rounded hover:bg-orange-300">My Events</button>
+            <button onClick={handleCreateEventClick} className="px-4 py-2 bg-orange-200 rounded hover:bg-orange-300">Add Event</button>
+          </div>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat, index) => (
+        {/* Tabs & Filters */}
+        <div className="p-4 md:flex md:items-center md:justify-between">
+          {/* Timeline Tabs */}
+          <div className="flex space-x-4 mb-4 md:mb-0">
             <button
-              key={index}
-              onClick={() => setCategory(cat)}
-              className={`px-3 py-1 border rounded-full ${category === cat ? "bg-orange-400 text-white" : "bg-white border-orange-300 text-gray-600"}`}
+              className={`px-4 py-2 rounded ${timeline === "past" ? "bg-orange-300" : "bg-orange-100"}`}
+              onClick={() => setTimeline("past")}
             >
-              {cat}
+              Past
             </button>
-          ))}
+            <button
+              className={`px-4 py-2 rounded ${timeline === "upcoming" ? "bg-orange-300" : "bg-orange-100"}`}
+              onClick={() => setTimeline("upcoming")}
+            >
+              Upcoming
+            </button>
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-2">
+            {categories.map((cat, index) => (
+              <button
+                key={index}
+                onClick={() => setCategory(cat)}
+                className={`px-3 py-1 border rounded-full ${category === cat ? "bg-orange-400 text-white" : "bg-white border-orange-300 text-gray-600"}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Events List */}
+        <div className="p-4 space-y-4 hover:scale-105">
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event, index) => (
+              <div key={index}>
+                <EventCard data={event} />
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500 mt-10">No events found.</div>
+          )}
         </div>
       </div>
-
-      {/* Events List */}
-      <div className="p-4 space-y-4 hover:scale-105">
-        {filteredEvents.length > 0 ? (
-          filteredEvents.map((event, index) => (
-            <div key={index}>
-              <EventCard data={event} />
-            </div>
-          ))
-        ) : (
-          <div className="text-center text-gray-500 mt-10">No events found.</div>
-        )}
-      </div>
+      {knowmoremodal && <Knowmoremodal/>}
+      {heroPagemodal && <Heromodal/>}
+      {createEventmodal && <Createeventmodal/>}
+      {updatemodal && <Updatemodal/>}
+      {MyEventmodal && <MyEventmodal/>}
     </div>
   );
 };

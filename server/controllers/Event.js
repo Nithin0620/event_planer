@@ -240,7 +240,7 @@ exports.getEventForCategory = async(req,res)=>{
          })
       }
 
-      const response = await Category.find({category}).populate("events").exec();
+      const response = await Category.find({category}).populate("events").populate("createdBy").exec();
 
       return res.status(200).josn({
          success:true,
@@ -271,7 +271,7 @@ exports.getMyEvent = async (req, res) => {
     }
 
     const response = await User.findById(userId)
-      .populate("events") 
+      .populate("events").populate("createdBy")
       .exec();
 
     return res.status(200).json({
