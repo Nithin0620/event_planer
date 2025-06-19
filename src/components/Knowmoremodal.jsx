@@ -1,4 +1,5 @@
 import React from "react";
+import { useState,useEffect,useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import {
@@ -7,6 +8,7 @@ import {
 } from "../Reducer/slices/modalSlics";
 
 const Knowmoremodal = () => {
+   const modalRef = useRef(null); 
   const dispatch = useDispatch();
   const knowmoredata = useSelector((state) => state.modal);
   const event = knowmoredata;
