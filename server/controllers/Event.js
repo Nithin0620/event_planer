@@ -287,3 +287,30 @@ exports.getMyEvent = async (req, res) => {
     });
   }
 };
+
+
+// exports.getAllCategory = async(req,res)=>{
+//    try{
+//       const response  = await Category.find({}).populate("events").exce();
+
+//       if(!response) {
+//          return res.status(400).json({
+//             success:false,
+//             message:"Unavle to fetch all categories",
+//             data:null
+//          })
+//       }
+//       return res.status(200).json({
+//          success:true,
+//          message:"all categories fetched",
+//          data:response
+//       })
+//    }
+//    catch(e){
+//       console.log(e);
+//       return res.status(500).json({
+//          success:false,
+//          message:"Error occured in fetching all categories",
+//       })
+//    }
+// }
