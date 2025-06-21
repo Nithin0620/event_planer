@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IoLogOut } from "react-icons/io5"
 import { setMyEventmodal } from '../Reducer/slices/modalSlics'
-import { setToken } from '../Reducer/slices/authSlics'
+import { setSignupData, setToken } from '../Reducer/slices/authSlics'
 
 const ProfileDropDown = ({setOpenProfileDropDown}) => {
    const setOpenProfileDropDown = setOpenProfileDropDown;
@@ -19,7 +19,17 @@ const ProfileDropDown = ({setOpenProfileDropDown}) => {
   const handleLogout = ()=>{
     console.warn("You will be logged out of your account. Are you sure?");
     const Confirmclose = window.confirm("Are You sure you want to LogOut");
-    if(Confirmclose) dispatch(setToken(null));
+    if(Confirmclose){
+      dispatch(setToken(null))
+      dispatch(setSignupData(null))
+
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+
+      toast.success("Logged Out")
+
+      navigate("/")
+    }
   } 
 
   return (

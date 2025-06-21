@@ -4,14 +4,29 @@ import { GoPersonFill } from "react-icons/go";
 import { BsPerson } from "react-icons/bs";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io";
+import { logInfunction } from "../services/operations/Auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    console.log("Login:", { email, password });
+    const callLogin = async()=>{
+      try{
+        const response = await logInfunction(email,password); 
+        if(response.data.success){
+          navigate("/");
+        }
+      }
+      catch(e){
+        console.log(e);
+        console.log("Error occured in the api calling function in login.jsx")
+      }
+    }
+    callLogin();
   };
 
   return (
