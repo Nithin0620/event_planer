@@ -7,7 +7,7 @@ import toast from "react-hot-toast"
 
 const {createEvent , getAllEvent , getAllEventById , updateEvent , deleteEvent , getEventByCategory , getMyEvent} = event;
 
-export const createEventfunction = async (eventName,description,location,date,time,category,creatorname,mode)=>{
+export const createEventfunction = async ({eventName,description,location,date,time,category,creatorname,mode})=>{
    
    const toastID = toast.loading("Loading..");
    const dispatch = useDispatch();
@@ -100,7 +100,7 @@ export const getAllEventByIdfunction = async(id)=>{
    }
 }
 
-export const updateEventfunction = async(id,eventName,description,location,date,time,category,mode) =>{
+export const updateEventfunction = async({id,eventName,description,location,date,time,category,creatorname,mode}) =>{
    const toastID = toast.loading("Loading...");
    const dispatch = useDispatch();
 

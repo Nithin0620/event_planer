@@ -1,17 +1,25 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setknowmoremodal,
   setknowmoredata,
+  setupdatemodal,
+  setUpdateeventID
 } from "../Reducer/slices/modalSlics";
 
 const EventCard = ({ event }) => {
   const dispatch = useDispatch();
+  const updateeventID = useSelector((state)=>state.modal);
 
   const handleKnowMoreClick = () => {
     dispatch(setknowmoremodal(true));
     dispatch(setknowmoredata(event));
   };
+  const handleUpdateClick= ()=>{
+    setupdatemodal(true);
+    setUpdateeventID(event._id)
+
+  }
 
   return (
     <div className="bg-white rounded-md shadow-md p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-lg transition">
@@ -32,7 +40,10 @@ const EventCard = ({ event }) => {
       </div>
 
       {/* Know More Button */}
-      <div>
+      <div className="flex flex-col justify-center">
+        <button onClick={handleUpdateClick} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded border border-gray-300">
+          Update Event
+        </button>
         <button
           onClick={handleKnowMoreClick}
           className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded border border-gray-300"
