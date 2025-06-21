@@ -98,8 +98,8 @@ export const sendOtpfunction = async(email)=>{
       if(!response?.data){
          throw new Error ("no result from server");
       }
-      toast.success("OTP Sent to email ")
-      navigate("/verify-email")
+      toast.success("OTP has been Sent to the provided email for verification")
+      navigate("/signup/verify-email")
    }  
    catch(e){  
       console.log(e);

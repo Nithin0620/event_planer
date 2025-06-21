@@ -3,21 +3,30 @@ import { useForm } from "react-hook-form";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io";
 import { IMG } from "../assets/image.png";
+import { useDispatch } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+import { sendOtpfunction } from "../services/operations/Auth";
 
 const Signup = () => {
   const {
     register,
-    getValues,
+    // getValues,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  // const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log("Form submitted:", data);
+  const onSubmit = async (data) => {
+    dispatch(beforeSignupdata(data));
+    const response = await sendOtpfunction(data.email);
+    if(!response?.success){
+      toast.error("Failed to send otp for email Verification");
+    }
   };
 
   return (
@@ -26,13 +35,13 @@ const Signup = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col md:flex-row w-full max-w-5xl bg-white/20 backdrop-blur-md rounded-xl shadow-lg overflow-hidden"
       >
-        {/* Form Section */}
+
         <div className="w-full md:w-2/3 p-6 sm:p-8">
           <h1 className="text-2xl font-bold text-[#122B49] mb-6 text-center md:text-left">
             Sign Up for Free
           </h1>
 
-          {/* Name Fields */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <input
@@ -66,7 +75,7 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Email Field */}
+
           <div className="mb-4">
             <input
               type="email"
@@ -80,7 +89,7 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Password Field */}
+
           <div className="mb-4 relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -102,7 +111,7 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Confirm Password Field */}
+
           <div className="mb-4 relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -126,7 +135,7 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Terms & Submit */}
+
           <div className="flex items-center mb-4 text-[#122B49]">
             <input
               type="checkbox"
@@ -142,11 +151,11 @@ const Signup = () => {
             type="submit"
             className="w-full bg-[#122B49] text-white py-2 px-6 rounded-full hover:bg-[#0f223b] transition"
           >
-            Submit
+            Create Account
           </button>
         </div>
 
-        {/* Image Section */}
+
         <div className="hidden md:flex w-full md:w-1/3 items-center justify-center p-6 bg-white/10">
           <div className="flex flex-col items-center rounded-full shadow-[0px_0px_65px_44px_#ffdbee]">
             <img src={IMG} alt="Glassmorphism" className="max-w-[200px]" />

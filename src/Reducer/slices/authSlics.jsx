@@ -13,6 +13,7 @@ const getFromLocalStorage = (key)=>{
 const initialState={
    signUpData : null,
    loading:false,
+   beforeSignupdata:null,
    token:getFromLocalStorage("token"),
 }
 
@@ -27,7 +28,9 @@ const authSlice =createSlice({
       setLoading(state,action){
          state.loading = action.payload
       },
-
+      setBeforeSignupdata(state,action){
+         state.beforeSignupdata = action.payload;
+      },
       setToken(state,action){
          state.token = action.payload;
          if(action.payload){
