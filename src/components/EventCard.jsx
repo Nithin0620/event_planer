@@ -22,7 +22,7 @@ const EventCard = ({ event }) => {
           {event.date}, {event.time} • {event.location}
         </p>
         <p className="text-sm text-gray-500">
-          By {event.createdBy} • {event.category}
+          By {event.creatorname} • {event.category}
         </p>
         <p className="text-sm">
           {event.description.length > 50

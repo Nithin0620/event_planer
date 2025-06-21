@@ -6,8 +6,8 @@ import { getAllEventfunction, getEventByCategoryfunction } from '../services/ope
 import EventCard from '../components/EventCard';
 import Knowmoremodal from '../components/Knowmoremodal';
 import Heromodal from ".../components/Heromodal" ;
-import Createeventmodal from "../components/Createeventmodal"
 import Updatemodal from '../components/Updatemodal';
+import CreateEventmodal from '../components/CreateEventmodal';
 import Myeventsmodal from '../components/Myeventsmodal';
 
 const Home = () => {

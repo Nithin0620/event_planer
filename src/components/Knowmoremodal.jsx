@@ -87,7 +87,7 @@ const Knowmoremodal = () => {
           </div>
           <div>
             <p className="font-medium">Created By:</p>
-            <p>{event.createdBy}</p>
+            <p>{event.creatorname}</p>
           </div>
           <div>
             <p className="font-medium">Created At:</p>

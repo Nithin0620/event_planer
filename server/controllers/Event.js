@@ -14,12 +14,13 @@ exports.createEvent = async(req,res)=>{
          time,
          category,
          mode,
+         creatorname
          
       }=req.body;
 
       const createdBy = req.user.id;
 
-      if(!eventName || !description ||! location ||!date || !time || !category ||!mode || ! createdBy){
+      if(!eventName || !description ||! location ||!date || !time || !category ||!mode || ! createdBy || !creatorname){
          return res.status(400).json({
             success:false,
             message:"ALl fields are required to create new event"
@@ -32,7 +33,9 @@ exports.createEvent = async(req,res)=>{
       time,
       category,
       mode,
-      createdBy};
+      createdBy,
+      creatorname
+   };
 
       const response = await Event.create(payload);
 

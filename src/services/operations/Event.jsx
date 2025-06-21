@@ -7,19 +7,19 @@ import toast from "react-hot-toast"
 
 const {createEvent , getAllEvent , getAllEventById , updateEvent , deleteEvent , getEventByCategory , getMyEvent} = event;
 
-export const createEventfunction = async (eventName,description,location,date,time,category,mode)=>{
+export const createEventfunction = async (eventName,description,location,date,time,category,creatorname,mode)=>{
    
    const toastID = toast.loading("Loading..");
    const dispatch = useDispatch();
 
    try{
       dispatch(setLoading(true));
-      if(!eventName || ! description || !location || !date || !time || !category || !mode){
+      if(!eventName || ! description || !location || !date || !time || !category || ! creatorname || !mode){
          throw new Error("All details are required");
       }
 
       const payload = {
-        eventName,description,location,date,time,category,mode
+        eventName,description,location,date,time,category,mode,creatorname
       }
 
       const response = await apiConnector("POST",createEvent , payload );

@@ -16,6 +16,11 @@ const ProfileDropDown = ({setOpenProfileDropDown}) => {
    dispatch(setMyEventmodal(true));
    setOpenProfileDropDown(false);
   }
+  const handleLogout = ()=>{
+    console.warn("You will be logged out of your account. Are you sure?");
+    const Confirmclose = window.confirm("Are You sure you want to LogOut");
+    if(Confirmclose) dispatch(setToken(null));
+  } 
 
   return (
     <div className="w-64 bg-white rounded-xl shadow-lg border border-gray-200 p-4 space-y-3 text-sm text-gray-800 z-50">
@@ -31,7 +36,7 @@ const ProfileDropDown = ({setOpenProfileDropDown}) => {
 
       
       <button
-        onClick={() => dispatch(setToken(null))}
+        onClick={handleLogout}
         className="w-full flex items-center gap-2 text-red-600 hover:bg-red-100 px-3 py-2 rounded-lg transition"
       >
         <IoLogOut className="text-lg" />
