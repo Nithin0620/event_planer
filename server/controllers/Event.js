@@ -6,7 +6,39 @@ const Category = require("../modals/Category");
 
 exports.createEvent = async(req,res)=>{
    try{
-      const {
+      let {
+         eventName,
+         description,
+         location,
+         date,
+         time,
+         category, // could be name or ObjectId
+         mode,
+         creatorname
+      } = req.body;
+
+      // If category is not an ObjectId, look it up by name
+      if (!category.match(/^[0-9a-fA-F]{24}$/)) {
+         const foundCategory = await Category.findOne({ categoryName: category });
+         if (!foundCategory) {
+            return res.status(400).json({
+               success: false,
+               message: "Category not found"
+            });
+         }
+         category = foundCategory._id;
+      }
+
+      const createdBy = req.user.id;
+
+      if(!eventName || !description || !location || !date || !time || !category || !mode || !createdBy || !creatorname){
+         return res.status(400).json({
+            success:false,
+            message:"All fields are required to create new event"
+         });
+      }
+
+      const payload = {
          eventName,
          description,
          location,
@@ -14,37 +46,15 @@ exports.createEvent = async(req,res)=>{
          time,
          category,
          mode,
+         createdBy,
          creatorname
-         
-      }=req.body;
-      console.log(req.body);
+      };
 
-      const createdBy = req.user.id;
+      const createdEvent = await Event.create(payload);
+      const response = await Event.findById(createdEvent._id).populate("category");
 
-      console.log(createdBy)
-
-      if(!eventName || !description ||! location ||!date || !time || !category ||!mode || ! createdBy || !creatorname){
-         return res.status(400).json({
-            success:false,
-            message:"ALl fields are required to create new event"
-         })
-      }
-      const payload = {eventName,
-      description,
-      location,
-      date,
-      time,
-      category,
-      mode,
-      createdBy,
-      creatorname
-   };
-
-      const response = await Event.create(payload);
-
-      // await Category.findOneAndUpdate({categoryName:category},{$push :{events:response._id}},{new:true});
-
-      const pushEventintoUser = await User.findByIdAndUpdate(createdBy , {$push :{events:response._id}},{new:true});
+      await Category.findByIdAndUpdate(category, { $push: { events: response._id } }, { new: true });
+      await User.findByIdAndUpdate(createdBy, { $push: { events: response._id } }, { new: true });
 
       return res.status(201).json({
          success: true,
@@ -92,9 +102,10 @@ exports.getallEvent = async(req,res)=>{
 
 exports.getEventById = async(req,res)=>{
    try{
-      const id = req.params._id;
-
+      const id = req.params.id;
+      console.log(id)
       const currentUser = req.user.id;
+      console.log(currentUser)
       
       if(!currentUser){
          return res.status(401).json({
@@ -128,7 +139,7 @@ exports.getEventById = async(req,res)=>{
 
 exports.updateEvent = async (req, res) => {
   try {
-    const _id = req.params._id;
+    const _id = req.params.id;
     const {
       eventName,
       description,
@@ -196,14 +207,15 @@ exports.updateEvent = async (req, res) => {
 
 exports.deleteEvent = async(req,res)=>{
    try{
-      const _id = req.params._id;
+      const id = req.params.id;
+      console.log(id);
 
       const currentUser = req.user.id;
 
-      const event = await Event.findById(_id);
+      const event = await Event.findById(id);
 
       if(!event){
-         return req.status(400).json({
+         return res.status(400).json({
             success:false,
             message:"Event Not found"
          })
@@ -216,7 +228,7 @@ exports.deleteEvent = async(req,res)=>{
          })
       }
 
-      const response =await Event.findByIdAndDelete(_id);
+      const response =await Event.findByIdAndDelete(id);
 
       return res.status(200).json({
          success:true,
@@ -246,9 +258,9 @@ exports.getEventForCategory = async(req,res)=>{
          })
       }
 
-      const response = await Category.find({category}).populate("events").populate("createdBy").exec();
+      const response = await Category.find({categoryName:category}).populate("events").exec();
 
-      return res.status(200).josn({
+      return res.status(200).json({
          success:true,
          message:"category retrived successfully",
          data:response
@@ -256,7 +268,7 @@ exports.getEventForCategory = async(req,res)=>{
    }
    catch(e){
       console.log(e);
-      return res.status(500).josn({
+      return res.status(500).json({
          success:false,
          message:"Error occured in getEventforCategory controller",
          data:null
@@ -277,7 +289,7 @@ exports.getMyEvent = async (req, res) => {
     }
 
     const response = await User.findById(userId)
-      .populate("events").populate("createdBy")
+      .populate("events")
       .exec();
 
     return res.status(200).json({
