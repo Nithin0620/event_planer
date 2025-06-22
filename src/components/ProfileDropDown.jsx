@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IoLogOut } from "react-icons/io5"
 import { setMyEventmodal } from '../Reducer/slices/modalSlics'
 import { setSignupData, setToken } from '../Reducer/slices/authSlics'
+import toast from 'react-hot-toast'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const ProfileDropDown = ({setOpenProfileDropDown}) => {
-   const setOpenProfileDropDown = setOpenProfileDropDown;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 //   const {setMyEventmodal} =useSelector((state)=>state.modal); 
 //   const {setToken} = useSelector((state)=>state.auth);

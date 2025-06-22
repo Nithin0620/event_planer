@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEyeSlash } from "react-icons/fa";
-import { IoEyeSharp } from "react-icons/io";
-import { IMG } from "../assets/image.png";
+import { IoEyeSharp } from "react-icons/io5";
+import  IMG  from "../assets/image.png";
 import { useDispatch } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 import { sendOtpfunction } from "../services/operations/Auth";
+import {setBeforeSignupdata} from "../Reducer/slices/authSlics"
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const {
@@ -22,7 +24,7 @@ const Signup = () => {
   // const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    dispatch(beforeSignupdata(data));
+    dispatch(setBeforeSignupdata(data));
     const response = await sendOtpfunction(data.email);
     if(!response?.success){
       toast.error("Failed to send otp for email Verification");

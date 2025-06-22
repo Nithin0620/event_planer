@@ -11,7 +11,7 @@ const initialState = {
 }
 
 const  modalSlice = createSlice({
-   name:modal,
+   name:"modal",
    initialState:initialState,
    reducer:{
       setMyEventmodal(state,action){
@@ -21,7 +21,7 @@ const  modalSlice = createSlice({
          state.createEventmodal = action.payload;
       },
       setheroPagemodal(state,action){
-         state.heroPagemodal = action.payload;
+         state.heroPagemodal = action.payload; 
       },
       setknowmoremodal(state,action){
          state.knowmoremodal = action.payload;
@@ -38,6 +38,6 @@ const  modalSlice = createSlice({
    }
 })
 
-export const {setMyEventmodal,setcreateEventmodal,setheroPagemodal,setknowmoremodal,setupdatemodal,setUpdateeventID} = modalSlice.actions
+export const {setMyEventmodal,setcreateEventmodal,setheroPagemodal,setknowmoremodal,setknowmoredata,setupdatemodal,setUpdateeventID} = modalSlice.actions
 
 export default modalSlice.reducer;

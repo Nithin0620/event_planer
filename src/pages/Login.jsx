@@ -3,7 +3,7 @@ import { TbLockPassword } from "react-icons/tb";
 import { GoPersonFill } from "react-icons/go";
 import { BsPerson } from "react-icons/bs";
 import { FaEyeSlash } from "react-icons/fa";
-import { IoEyeSharp } from "react-icons/io";
+import { IoEyeSharp } from "react-icons/io5";
 import { logInfunction } from "../services/operations/Auth";
 import { useNavigate } from "react-router-dom";
 

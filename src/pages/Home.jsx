@@ -5,9 +5,9 @@ import toast from 'react-hot-toast';
 import { getAllEventfunction, getEventByCategoryfunction } from '../services/operations/Event';
 import EventCard from '../components/EventCard';
 import Knowmoremodal from '../components/Knowmoremodal';
-import Heromodal from ".../components/Heromodal" ;
+import Heromodal from "../components/Heromodal" ;
 import Updatemodal from '../components/Updatemodal';
-import CreateEventmodal from '../components/CreateEventmodal';
+import CreateEventmodal from '../components/Createeventmodal';
 import Myeventsmodal from '../components/Myeventsmodal';
 
 const Home = () => {
@@ -160,9 +160,9 @@ const Home = () => {
       </div>
       {knowmoremodal && <Knowmoremodal/>}
       {heroPagemodal && <Heromodal/>}
-      {createEventmodal && <Createeventmodal/>}
+      {createEventmodal && <CreateEventmodal/>}
       {updatemodal && <Updatemodal/>}
-      {MyEventmodal && <MyEventmodal/>}
+      {MyEventmodal && <Myeventsmodal/>}
     </div>
   );
 };

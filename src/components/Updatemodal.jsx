@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { updateEventfunction } from "../services/operations/Event";
-import { getEventById } from "../../server/controllers/Event";
+import { getAllEventByIdfunction } from "../services/operations/Event";
 import toast from "react-hot-toast";
 
 const Updatemodal = () => {
@@ -13,7 +13,7 @@ const Updatemodal = () => {
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
-        const response = await getEventById(updateeventID);
+        const response = await getAllEventByIdfunction(updateeventID);
         if (response) setEventDatail(response);
       } catch (e) {
         console.log(e);
