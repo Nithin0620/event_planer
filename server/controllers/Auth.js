@@ -2,9 +2,12 @@ const mongoose = require("mongoose");
 const User = require("../modals/User")
 const Event = require("../modals/Event");
 const otpGenerator= require("otp-generator");
+const bycrypt = require("bcrypt");
 const Otp = require("../modals/Otp");
+const jwt = require("jsonwebtoken");
 
 exports.signUp = async (req,res)=>{
+   console.log("req.body:", req.body); // Add this line
    try{
       const {
          firstName,
@@ -14,6 +17,9 @@ exports.signUp = async (req,res)=>{
          confirmPassword,
          otp,
       } = req.body;
+      if(!otp){
+         throw new Error("first name not present")
+      }
 
       if(!firstName || !lastName || !email || !password || !confirmPassword || !otp){
          return res.status(403).json({
@@ -46,7 +52,7 @@ exports.signUp = async (req,res)=>{
          })
       }
       else{
-         if(recentOtp[0].otp !== otp){
+         if(recentOtp.otp !== otp){
             return res.status(400).json({
                success:false,
                message:"Invalid OTP"
@@ -78,6 +84,7 @@ exports.signUp = async (req,res)=>{
 
    }
    catch(e){
+      console.log(e)
       return res.status(500).json({
          success:false,
          message:"Error in creating USer Data in DB in signup controller",
@@ -112,7 +119,7 @@ exports.login = async(req,res)=>{
             id: USER._id,
          };
          
-         const Token = jwt.sign(payload,process.env.JWT_SECERER,{
+         const Token = jwt.sign(payload,process.env.JWT_SECRET,{
             expiresIn :"2h",
          })
 
@@ -140,6 +147,7 @@ exports.login = async(req,res)=>{
       }
    }
    catch(e){
+      console.log(e);
       return res.status(500).json({
          success:false,
          message:"Error occured in login controller"
@@ -150,7 +158,7 @@ exports.login = async(req,res)=>{
 
 exports.sendOtp = async(req,res)=>{
    try{
-      const {email} = res.body;
+      const {email} = req.body;
 
       const checkUserPresent = await User.findOne({email:email});
 
@@ -167,7 +175,7 @@ exports.sendOtp = async(req,res)=>{
          specialChars:false,
       })
 
-      result = Otp.findOne({otp:otp});
+      result = await Otp.findOne({otp:otp});
 
       while(result){
          var otp = otpGenerator.generate(6,{
@@ -176,7 +184,7 @@ exports.sendOtp = async(req,res)=>{
             specialChars:false,
          })
 
-         result = Otp.findOne({otp:otp});  
+         result =await  Otp.findOne({otp:otp});  
       }
       const otpBody = await Otp.create({otp,email});
 

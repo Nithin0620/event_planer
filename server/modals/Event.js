@@ -18,11 +18,10 @@ const eventSchema = new mongoose.Schema({
       required:true,
    },
    time:{
-      type:TimeRanges,
+      type:String,
    },
    category:{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"Category",
+      type:String,
       require:true
    },
    mode:{
@@ -43,4 +42,4 @@ const eventSchema = new mongoose.Schema({
    }
 })
 
-module.exports = mongoose.modal ("Event",eventSchema); 
+module.exports = mongoose.model ("Event",eventSchema); 

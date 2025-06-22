@@ -1,40 +1,39 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.schema({
-   firstName :{
-      type : String,
+const userSchema = new mongoose.Schema({
+   firstName: {
+      type: String,
       required: true,
-      trim:true
+      trim: true
    },
-   lastName:{
-      type:String,
-      required:true,
-      trim:true
+   lastName: {
+      type: String,
+      required: true,
+      trim: true
    },
-   email:{
-      type:String,
-      required:true
+   email: {
+      type: String,
+      required: true
    },
-   password:{
-      type:String,
-      require:true
+   password: {
+      type: String,
+      required: true
    },
-   image:{
-      type:String
+   image: {
+      type: String
    },
-   events:[
-      {   
-         type:mongoose.Schema.Types.ObjectId,
-         ref:"Event"
+   events: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Event"
       }
    ],
-   token:{
-      type:String,
+   token: {
+      type: String,
    },
-   resetPasswordExpiresin:{
-      type:Date,
+   resetPasswordExpiresin: {
+      type: Date,
    }
-})
+});
 
-
-module.exports = mongoose.modal("User",userSchema);
+module.exports = mongoose.model("User", userSchema);

@@ -17,8 +17,11 @@ exports.createEvent = async(req,res)=>{
          creatorname
          
       }=req.body;
+      console.log(req.body);
 
       const createdBy = req.user.id;
+
+      console.log(createdBy)
 
       if(!eventName || !description ||! location ||!date || !time || !category ||!mode || ! createdBy || !creatorname){
          return res.status(400).json({
@@ -39,7 +42,7 @@ exports.createEvent = async(req,res)=>{
 
       const response = await Event.create(payload);
 
-      await Category.findOneAndUpdate({categoryName:category},{$push :{events:response._id}},{new:true});
+      // await Category.findOneAndUpdate({categoryName:category},{$push :{events:response._id}},{new:true});
 
       const pushEventintoUser = await User.findByIdAndUpdate(createdBy , {$push :{events:response._id}},{new:true});
 

@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer")
-require("dotenv").json();
+require("dotenv").config();
 
 exports.sendEmail =  async(email,title,body)=>{
    try{
@@ -15,7 +15,7 @@ exports.sendEmail =  async(email,title,body)=>{
          from :"Nithin",
          to:`${email}`,
          subject : `${title}`,
-         body:`<h1>${body}<h1/>`
+         html:`<h1>${body}<h1/>`
       }
 
       const response = await transporter.sendMail(mailOptions);

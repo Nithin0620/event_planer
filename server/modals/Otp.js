@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const sendEmail = require("../urility/mailSender")
-const mailTamplet  = require("../Tamplets/mailTamplet")
+const {sendEmail} = require("../urility/mailSender")
+const {mailTamplet}  = require("../Tamplets/mailTamplet")
 
 const otpSchema = new mongoose.Schema({
    otp:{
