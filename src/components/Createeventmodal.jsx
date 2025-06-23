@@ -32,7 +32,7 @@ const CreateEventmodal = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await createEventfunction(data);
+      const response = await createEventfunction(data,dispatch);
       if (response) toast.success("Event Dispatched from the UI");
       else toast.error("Event can't be created due to some Problems");
     } catch (e) {

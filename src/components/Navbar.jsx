@@ -18,15 +18,28 @@ const Navbar = () => {
   // const lastName = A
   const image = signUpData?.image || `https://api.dicebear.com/5.x/initials/svg?seed=N A`
 
+
+  const handleTitleclick=()=>{
+    navigate("/")
+    dispatch(setheroPagemodal(true))
+  }
+
   return (
-    <nav className="w-full px-4 py-3 bg-white shadow-md flex items-center justify-between border-b border-gray-300 flex-wrap">
+    <nav className="w-full px-4 py-3 bg-white shadow-md flex justify-between border-b border-gray-300 flex-wrap">
+      <div>
+
+      </div>
       {/* WEBSITE NAME CENTERED */}
-      <div onClick={()=> dispatch(setheroPagemodal(true))} className="w-full text-center md:w-auto md:absolute md:left-1/2 md:transform md:-translate-x-1/2 text-xl font-semibold text-[#122B49] mb-2 md:mb-0">
+      <div onClick={handleTitleclick} className="w-full cursor-pointer text-center md:w-auto md:absolute md:left-1/2 md:transform md:-translate-x-1/2 text-xl font-semibold text-[#122B49] mb-2 md:mb-0">
         Events Manager
       </div>
 
       {/* RIGHT SIDE CONTROLS */}
-      <div className="w-full md:w-auto ml-auto flex items-center justify-center md:justify-end space-x-4 mt-2 md:mt-0">
+      <div className='flex justify-end gap-6'>
+        <div className='cursor-pointer px-4 py-1 rounded-md ml-auto border border-gray-500 text-gray-800 hover:bg-gray-100 transition' onClick={()=>navigate("/")}>
+          Home
+        </div>
+        <div className="w-full md:w-auto ml-auto flex items-center justify-center md:justify-end space-x-4 mt-2 md:mt-0">
         {token === null ? (
           <>
             <button
@@ -60,6 +73,7 @@ const Navbar = () => {
             )}
           </div>
         )}
+      </div>
       </div>
     </nav>
   )

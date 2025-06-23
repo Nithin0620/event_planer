@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { updateEventfunction } from "../services/operations/Event";
@@ -8,12 +8,13 @@ import toast from "react-hot-toast";
 
 const Updatemodal = () => {
   const [EventDetail, setEventDatail] = useState(null);
+  const dispatch = useDispatch();
   const updateeventID = useSelector((state) => state.modal);
 
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
-        const response = await getAllEventByIdfunction(updateeventID);
+        const response = await getAllEventByIdfunction(updateeventID,dispatch);
         if (response) setEventDatail(response);
       } catch (e) {
         console.log(e);
@@ -38,7 +39,7 @@ const Updatemodal = () => {
       if (JSON.stringify(data) === JSON.stringify(EventDetail)) {
         toast.warning("No changes have been made in the Event Details");
       } else {
-        const response = await updateEventfunction(data);
+        const response = await updateEventfunction(data,dispatch);
         if (response) toast.success("Event Updated in the UI");
         else toast.error("Event can't be Updated due to some Problems");
       }

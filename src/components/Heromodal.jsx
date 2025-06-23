@@ -21,13 +21,13 @@ const Heromodal = () => {
   };
 
   const handleViewEventsClick = () => {
-    navigate("/");
+    dispatch(setheroPagemodal(false));
   };
 
   return (
     <div
-      className="min-h-screen z-10 place-items-center w-[440px] bg-cover bg-no-repeat bg-center flex items-center justify-center px-4 py-10"
-      style={{ backgroundImage: `url(${IMG})` }}
+      className="z-50 fixed top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-no-repeat bg-black bg-opacity-10 flex items-center justify-center px-4 py-10"
+      
     >
       <div className="bg-peach-50 bg-opacity-90 w-full max-w-2xl rounded-2xl p-6 shadow-lg">
         <div className="flex justify-end">
@@ -49,13 +49,13 @@ const Heromodal = () => {
             <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-4">
               <button
                 onClick={() => navigate("/login")}
-                className="text-white px-6 py-2 rounded-lg border-0 border-white hover:border-2 hover:border-yellow-50 transition"
+                className="text-white px-6 py-2 rounded-lg border-0 font-serif border-white hover:border-2 hover:border-yellow-50 transition"
               >
                 Log In
               </button>
               <button
                 onClick={() => navigate("/signup")}
-                className="text-white px-6 py-2 rounded-lg  border-0 border-white hover:border-2 hover:border-yellow-5 transition"
+                className="text-white px-6 py-2 rounded-lg font-serif  border-0 border-white hover:border-2 hover:border-yellow-5 transition"
               >
                 Sign Up
               </button>

@@ -34,7 +34,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-400 via-purple-300 to-blue-300 p-4">
+    <div className="min-h-screen relative z-0 flex items-center justify-center bg-gradient-to-br from-pink-400 via-purple-300 to-blue-300 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col md:flex-row w-full max-w-5xl bg-white/20 backdrop-blur-md rounded-xl shadow-lg overflow-hidden"

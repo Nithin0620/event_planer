@@ -13,7 +13,7 @@ const Myeventsmodal = () => {
   useEffect(() => {
     const getMyEvent = async () => {
       try {
-        const response = await getMyEventfunction();
+        const response = await getMyEventfunction(dispatch);
         if (!response) {
           toast.error("Unable to fetch My Events");
         } else {

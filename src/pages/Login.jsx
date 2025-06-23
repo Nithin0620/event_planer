@@ -31,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-300 via-pink-300 to-blue-300 px-4 py-8">
+    <div className="min-h-screen relative z-0 flex items-center justify-center bg-gradient-to-br from-purple-300 via-pink-300 to-blue-300 px-4 py-8">
       <div className="bg-white/20 backdrop-blur-lg p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
         {/* Avatar Icon */}
         <div className="flex justify-center mb-6">

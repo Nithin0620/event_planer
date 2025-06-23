@@ -7,10 +7,9 @@ import toast from "react-hot-toast"
 
 const {createEvent , getAllEvent , getAllEventById , updateEvent , deleteEvent , getEventByCategory , getMyEvent} = event;
 
-export const createEventfunction = async ({eventName,description,location,date,time,category,creatorname,mode})=>{
+export const createEventfunction = async ({eventName,description,location,date,time,category,creatorname,mode},dispatch)=>{
    
    const toastID = toast.loading("Loading..");
-   const dispatch = useDispatch();
 
    try{
       dispatch(setLoading(true));
@@ -42,11 +41,8 @@ export const createEventfunction = async ({eventName,description,location,date,t
    }
 }
 
-export const getAllEventfunction = async()=>{
-   const toastID = toast.loading("Loading...");
-   const dispatch = useDispatch();
-
-   
+export const getAllEventfunction = async(dispatch)=>{
+   const toastID = toast.loading("Loading...");  
    try{
       dispatch(setLoading(true));
 
@@ -63,8 +59,9 @@ export const getAllEventfunction = async()=>{
 
    }
    catch(e){
+      // toast.dismiss(toastID)
       console.log("error occured during fetching event",e);
-      toast.error(e.message);
+      // toast.error();
       return { success: false, message: e.message };
    }
    finally{
@@ -72,9 +69,8 @@ export const getAllEventfunction = async()=>{
    }
 }
 
-export const getAllEventByIdfunction = async(id)=>{
+export const getAllEventByIdfunction = async(id , dispatch)=>{
    const toastID = toast.loading("Loading...")
-   const dispatch = useDispatch();
 
    try{  
       dispatch(setLoading(true));
@@ -100,9 +96,8 @@ export const getAllEventByIdfunction = async(id)=>{
    }
 }
 
-export const updateEventfunction = async({id,eventName,description,location,date,time,category,creatorname,mode}) =>{
+export const updateEventfunction = async({id,eventName,description,location,date,time,category,creatorname,mode},dispatch) =>{
    const toastID = toast.loading("Loading...");
-   const dispatch = useDispatch();
 
    try{
       dispatch(setLoading(true));
@@ -139,9 +134,8 @@ export const updateEventfunction = async({id,eventName,description,location,date
    }
 }
 
-export const deleteEventfunction= async(id)=>{
+export const deleteEventfunction= async(id,dispatch)=>{
    const toastID = toast.loading("Loading...");
-   const dispatch = useDispatch();
 
    try{
       dispatch(setLoading(true));
@@ -171,9 +165,8 @@ export const deleteEventfunction= async(id)=>{
    }
 }
 
-export const getEventByCategoryfunction = async(category) => {
+export const getEventByCategoryfunction = async(category , dispatch) => {
    const toastID =toast.loading("Loading...");
-   const dispatch = useDispatch();
 
    try{
       dispatch(setLoading(true));
@@ -203,9 +196,8 @@ export const getEventByCategoryfunction = async(category) => {
 }
 
 
-export const getMyEventfunction = async()=>{
+export const getMyEventfunction = async(dispatch)=>{
    const toastID = toast.loading("Loading ... ");
-   const dispatch = useDispatch();
 
    try{
       dispatch(setLoading(true));
