@@ -6,17 +6,18 @@ import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 import { logInfunction } from "../services/operations/Auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleLogin = () => {
     const callLogin = async()=>{
       try{
-        const response = await logInfunction(email,password); 
+        const response = await logInfunction(email,password,dispatch,navigate ); 
         if(response.data.success){
           navigate("/");
         }

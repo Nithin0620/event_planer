@@ -26,7 +26,7 @@ const Heromodal = () => {
 
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-no-repeat bg-center flex items-center justify-center px-4 py-10"
+      className="min-h-screen z-10 place-items-center w-[440px] bg-cover bg-no-repeat bg-center flex items-center justify-center px-4 py-10"
       style={{ backgroundImage: `url(${IMG})` }}
     >
       <div className="bg-peach-50 bg-opacity-90 w-full max-w-2xl rounded-2xl p-6 shadow-lg">

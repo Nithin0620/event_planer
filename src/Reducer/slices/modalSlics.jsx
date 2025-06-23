@@ -13,7 +13,7 @@ const initialState = {
 const  modalSlice = createSlice({
    name:"modal",
    initialState:initialState,
-   reducer:{
+   reducers:{
       setMyEventmodal(state,action){
          state.MyEventmodal = action.payload;
       },

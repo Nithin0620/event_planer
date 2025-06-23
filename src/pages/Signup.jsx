@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { sendOtpfunction } from "../services/operations/Auth";
 import {setBeforeSignupdata} from "../Reducer/slices/authSlics"
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const {
@@ -15,8 +16,9 @@ const Signup = () => {
     // getValues,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm()
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -25,7 +27,7 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     dispatch(setBeforeSignupdata(data));
-    const response = await sendOtpfunction(data.email);
+    const response = await sendOtpfunction(data.email,dispatch , navigate);
     if(!response?.success){
       toast.error("Failed to send otp for email Verification");
     }

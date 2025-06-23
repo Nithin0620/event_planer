@@ -14,6 +14,9 @@ const Navbar = () => {
   const [openProfileDropDown, setOpenProfileDropDown] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate();
+  // const firstName = N;
+  // const lastName = A
+  const image = signUpData?.image || `https://api.dicebear.com/5.x/initials/svg?seed=N A`
 
   return (
     <nav className="w-full px-4 py-3 bg-white shadow-md flex items-center justify-between border-b border-gray-300 flex-wrap">
@@ -45,7 +48,7 @@ const Navbar = () => {
             onClick={() => setOpenProfileDropDown(!openProfileDropDown)}
           >
             <img
-              src={signUpData.image}
+              src={image}
               alt="profile"
               className="w-8 h-8 rounded-full object-cover border border-gray-400"
             />

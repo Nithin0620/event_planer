@@ -104,8 +104,8 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-orange-50 text-gray-800">
       {/* Top Bar */}
-      <div>
-        <div className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
+      <div className='flex'>
+        <div className="flex justify-between items-center w-72 px-6 py-4 bg-white shadow-md">
           <h1 className="text-2xl font-bold">Event Planner</h1>
           <div className="space-x-2">
             <button onClick={handleMyEventClick} className="px-4 py-2 bg-orange-200 rounded hover:bg-orange-300">My Events</button>
@@ -114,7 +114,7 @@ const Home = () => {
         </div>
 
         {/* Tabs & Filters */}
-        <div className="p-4 md:flex md:items-center md:justify-between">
+        <div className="p-4 flex flex-col md:flex md:items-center md:justify-between">
           {/* Timeline Tabs */}
           <div className="flex space-x-4 mb-4 md:mb-0">
             <button

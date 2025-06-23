@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import { BiArrowBack } from "react-icons/bi";
@@ -12,6 +12,7 @@ const Verifyemail = () => {
   const [loading, setLoading] = useState(false);
   const beforeSignupdata = useSelector((state) => state.auth?.signupData);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!beforeSignupdata) {
@@ -26,13 +27,14 @@ const Verifyemail = () => {
       const { firstName, lastName, email, password, confirmPassword } =
         beforeSignupdata;
 
-      const response = await signUpfunction(
-        firstName,
+      const payload = {firstName,
         lastName,
         email,
         password,
         confirmPassword,
-        otp
+        otp}
+      const response = await signUpfunction(
+          payload , dispatch , navigate
       );
 
       if (response?.success) {

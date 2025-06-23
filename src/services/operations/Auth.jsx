@@ -1,20 +1,15 @@
 import { apiConnector } from "../apiConnector";
 import { auth } from "../apis";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { setLoading, setSignupData, setToken } from "../../Reducer/slices/authSlics";
-// import { login } from "../../../server/controllers/Auth";
 
 const {logIn,signUp,sendOtp} = auth;
-const navigate = useNavigate();
 
-const dispatch = useDispatch();
 
-export const signUpfunction = async({firstName , lastName , email,password,confirmPassword,otp})=>{
+export const signUpfunction = async({firstName, lastName, email, password, confirmPassword, otp}, dispatch, navigate) => {
    dispatch(setLoading(true));
-   const toastID = toast.loading ("Loading...")
-   try{
+   const toastID = toast.loading("Loading...");
+   try {
       if(!firstName ||!lastName ||!email||!password||!confirmPassword||!otp){
          throw new Error("All fields are required");
       }
@@ -45,10 +40,10 @@ export const signUpfunction = async({firstName , lastName , email,password,confi
 
 }
 
-export const logInfunction = async (email,password)=>{
+export const logInfunction = async (email, password, dispatch, navigate) => {
    dispatch(setLoading(true));
-   const toastID = toast.loading("Loading ...")
-   try{
+   const toastID = toast.loading("Loading ...");
+   try {
       if(!email ||!password){
          throw new Error ("Both Email and password is required to login");
       }
@@ -84,10 +79,10 @@ export const logInfunction = async (email,password)=>{
    }  
 }
 
-export const sendOtpfunction = async(email)=>{
+export const sendOtpfunction = async (email, dispatch, navigate) => {
    const toastID = toast.loading("Loading...");
    dispatch(setLoading(true));
-   try{
+   try {
       if(!email){
          throw new Error("Email is required to Send Otp");
       }
@@ -98,8 +93,8 @@ export const sendOtpfunction = async(email)=>{
       if(!response?.data){
          throw new Error ("no result from server");
       }
-      toast.success("OTP has been Sent to the provided email for verification")
-      navigate("/signup/verify-email")
+      toast.success("OTP has been Sent to the provided email for verification");
+      navigate("/signup/verify-email");
    }  
    catch(e){  
       console.log(e);
