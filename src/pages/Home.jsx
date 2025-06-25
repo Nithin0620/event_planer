@@ -14,9 +14,9 @@ const Home = () => {
   const [category, setCategory] = useState("All");
   const [timeline, setTimeline] = useState("upcoming");
   const [allEvents, setAllEvents] = useState([]);
-  const [upcoming, setUpcoming] = useState([]);
+  // const [upcoming, setUpcoming] = useState([]);
   const dispatch  = useDispatch();
-  const [past, setPast] = useState([]);
+  // const [past, setPast] = useState([]);
   const { token } = useSelector((state) => state.auth);
   const {knowmoremodal , heroPagemodal , createEventmodal , updatemodal , MyEventmodal} = useSelector((state)=> state.modal)
 
@@ -44,16 +44,15 @@ const Home = () => {
     const fetchAllEvents = async () => {
       try {
         const response = await getAllEventfunction(dispatch);
+        setAllEvents(response?.data);
         console.log("inside function")
-        console.log(response)
-        // if (!response || !response.success || !response.data) {
-        //   toast.error("Failed to fetch all events");
-        //   return;
-        // }
-        setAllEvents(response);
-        const { upcoming, past } = splitEvents(response);
-        setUpcoming(upcoming);
-        setPast(past);
+        console.log(response?.data)
+        // Ensure response.data is an array
+       
+        
+        
+        
+        
       } catch (error) {
         console.log(error, "in Home.jsx useEffect");
         toast.error("Error while fetching events");
@@ -62,26 +61,26 @@ const Home = () => {
 
     fetchAllEvents();
   }, []);
+  useEffect(() => {
+    console.log("allEvents updated:", allEvents);
+  }, [allEvents]);
 
   useEffect(() => {
     const fetchEventsByCategory = async () => {
       try {
         if (category === "All") {
           const { upcoming, past } = splitEvents(allEvents);
-          setUpcoming(upcoming);
-          setPast(past);
+          // setUpcoming(upcoming);
+          // setPast(past);
           return;
         }
 
-        const response = await getEventByCategoryfunction(category,dispatch);
-        if (!response) {
-          toast.error("Failed to fetch category events");
-          return;
-        }
-
-        const { upcoming, past } = splitEvents(response.data);
-        setUpcoming(upcoming);
-        setPast(past);
+        const response = await getEventByCategoryfunction(category, dispatch);
+        // Ensure response.data is an array
+        // const eventsArray = Array.isArray(response?.data) ? response.data : [];
+        // const { upcoming, past } = splitEvents(eventsArray);
+        // setUpcoming(upcoming);
+        // setPast(past);
       } catch (error) {
         console.log(error, "in category fetch");
         toast.error("Error while fetching category events");
@@ -107,8 +106,6 @@ const Home = () => {
     }
   };
 
-  const filteredEvents = timeline === "upcoming" ? upcoming : past;
-  console.log(past)
 
   return (
     <div className="min-h-screen bg-orange-50 z-0 relative text-gray-800">
@@ -155,8 +152,8 @@ const Home = () => {
 
           {/* Events List */}
           <div className="p-4 space-y-4 hover:scale-105">
-            {filteredEvents.length > 0 ? (
-              filteredEvents.map((event, index) => (
+            {allEvents.length > 0 ? (
+              allEvents.map((event, index) => (
                 <div key={index}>
                   <EventCard data={event} />
                 </div>

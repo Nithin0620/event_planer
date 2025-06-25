@@ -10,7 +10,8 @@ import {
 const EventCard = ({ event }) => {
   const dispatch = useDispatch();
   const updateeventID = useSelector((state)=>state.modal);
-
+  console.log("at event card")
+  console.log(event)
   const handleKnowMoreClick = () => {
     dispatch(setknowmoremodal(true));
     dispatch(setknowmoredata(event));

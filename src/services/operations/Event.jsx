@@ -57,7 +57,8 @@ export const getAllEventfunction = async(dispatch)=>{
       dispatch(setLoading(false));
       // toast.success("AL)
 
-      return response.data.data;
+      return response.data
+      ;
 
    }
    catch(e){
