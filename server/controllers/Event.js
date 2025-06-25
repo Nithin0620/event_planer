@@ -6,6 +6,7 @@ const Category = require("../modals/Category");
 
 exports.createEvent = async(req,res)=>{
    try{
+      console.log(req.body)
       let {
          eventName,
          description,
@@ -85,7 +86,7 @@ exports.getallEvent = async(req,res)=>{
          })
       }
       return res.status(200).json({
-         success:false,
+         success:true,
          message:"data of events retrived successfully",
          data:response,
       })

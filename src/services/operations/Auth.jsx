@@ -10,7 +10,10 @@ export const signUpfunction = async({firstName, lastName, email, password, confi
    dispatch(setLoading(true));
    const toastID = toast.loading("Loading...");
    try {
-      if(!firstName ||!lastName ||!email||!password||!confirmPassword||!otp){
+      if(!otp){
+         toast.error("otp hi nhei mila")
+      }
+      if(!firstName ||!lastName ||!email||!password||!confirmPassword){
          throw new Error("All fields are required");
       }
       if(password !== confirmPassword){
@@ -20,12 +23,13 @@ export const signUpfunction = async({firstName, lastName, email, password, confi
          firstName , lastName , email,password,confirmPassword,otp
       }
       const response = await apiConnector("POST" , signUp, payload);
+      console.log(response)
       if(!response?.data?.success) {
          throw new Error(response?.data?.message || "Signup Failed");
       }
 
-      toast.success("SignUp Successful");
       navigate("/login");
+      toast.success("SignUp Successful");
       return response;
    }
    catch(e){
@@ -70,11 +74,14 @@ export const logInfunction = async (email, password, dispatch, navigate) => {
 
    }
    catch(e){
-      console.log(e);
+      console.log("this is the error :");
+      console.log("this is the error :",e);
       console.log("Error occured in the login api call function in the operation in the login function");
    }
    finally{
       toast.dismiss(toastID);
+      toast.success("Login successful");
+      navigate("/")
       dispatch(setLoading(false));
    }  
 }
@@ -83,25 +90,25 @@ export const sendOtpfunction = async (email, dispatch, navigate) => {
    const toastID = toast.loading("Loading...");
    dispatch(setLoading(true));
    try {
-      if(!email){
+      if (!email) {
          throw new Error("Email is required to Send Otp");
       }
-      const response = await apiConnector("POST",sendOtp,email);
-      if(!response?.success){
-         throw new Error (response.data.message)
-      }
-      if(!response?.data){
-         throw new Error ("no result from server");
+      console.log(email)
+      const response = await apiConnector("POST", sendOtp, { email });
+      console.log(response)
+      if (!response?.data?.success) {
+         throw new Error(response?.data?.message || "OTP sending failed");
       }
       toast.success("OTP has been Sent to the provided email for verification");
-      navigate("/signup/verify-email");
+      console.log("Navigating to /verify-email");
+      navigate("/verifyemail");
    }  
-   catch(e){  
-      console.log(e);
-      console.log("Error occured in the send otp function that is sendotp API calling function in the operations folder");
+   catch (e) {  
+      // console.log(e);
+      console.log("Error occurred in the send otp function (sendOtp API call in operations folder)");
    }
-   finally{
-      toast.dismiss(toastID)
+   finally {
+      toast.dismiss(toastID);
       dispatch(setLoading(false));
    }
 }

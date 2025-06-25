@@ -32,6 +32,7 @@ export const createEventfunction = async ({eventName,description,location,date,t
       return response.data;
    }
    catch(e){
+      console.log(e)
       console.log("error occured during creating new event",e);
       toast.error(e.message);
       return { success: false, message: e.message };
@@ -47,6 +48,7 @@ export const getAllEventfunction = async(dispatch)=>{
       dispatch(setLoading(true));
 
       const response = await apiConnector("GET",getAllEvent);
+      console.log(response)
 
       if (!response?.data?.success){
          throw new Error("Error occured while fetching all event from data base in getAllEventfunction")
@@ -55,13 +57,12 @@ export const getAllEventfunction = async(dispatch)=>{
       dispatch(setLoading(false));
       // toast.success("AL)
 
-      return response.data;
+      return response.data.data;
 
    }
    catch(e){
-      // toast.dismiss(toastID)
+      console.log(e)
       console.log("error occured during fetching event",e);
-      // toast.error();
       return { success: false, message: e.message };
    }
    finally{

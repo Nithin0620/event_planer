@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 const Verifyemail = () => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-  const beforeSignupdata = useSelector((state) => state.auth?.signupData);
+  const beforeSignupdata = useSelector((state) => state.auth.beforeSignupdata);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,13 +33,15 @@ const Verifyemail = () => {
         password,
         confirmPassword,
         otp}
+        console.log("data before calling signupfunction",payload)
       const response = await signUpfunction(
           payload , dispatch , navigate
       );
+      console.log(response)
 
-      if (response?.success) {
+      if (response?.data?.success) {
         toast.success("Email Verified and Signup Successful!");
-        navigate("/dashboard");
+        navigate("/login");
       } else {
         toast.error("Invalid OTP or Signup Failed.");
       }
@@ -76,12 +78,15 @@ const Verifyemail = () => {
                 <input
                   {...props}
                   placeholder="-"
-                  className="w-[42px] md:w-[50px] h-[42px] md:h-[50px] text-center border border-orange-300 rounded-md bg-[#fff7ed] text-orange-800 text-lg font-semibold focus:outline-orange-500"
+                  style={{
+                    boxShadow: "inset 0px -1px 0px ",
+                  }}
+                  className="w-[48px] lg:w-[60px] border-[1.5px] bg-black-800 rounded-[0.5rem] text-orange-900 aspect-square border-orange-600 text-center focus:border-0 focus:outline-orange-200"
                 />
               )}
               containerStyle={{
                 justifyContent: "space-between",
-                gap: "0.5rem",
+                gap: "5px",
               }}
             />
 

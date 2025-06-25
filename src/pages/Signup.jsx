@@ -28,9 +28,9 @@ const Signup = () => {
   const onSubmit = async (data) => {
     dispatch(setBeforeSignupdata(data));
     const response = await sendOtpfunction(data.email,dispatch , navigate);
-    if(!response?.success){
-      toast.error("Failed to send otp for email Verification");
-    }
+    // if(!response?.data?.success){
+    //   toast.error("Failed to send otp for email Verification");
+    // }
   };
 
   return (

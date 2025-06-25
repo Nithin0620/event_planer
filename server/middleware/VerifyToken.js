@@ -4,10 +4,12 @@ require("dotenv").config();
 
 
 exports.verifyToken = async(req,res,next)=>{
+   console.log(req.cookies)
    const token = 
                   req.cookies.token;
    if(!token){
-      return res.staus(401).json({
+      console.log(token)
+      return res.status(401).json({
          success:false,
          message:"Token not found or invalid token"
       })

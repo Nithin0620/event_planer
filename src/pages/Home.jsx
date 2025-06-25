@@ -21,7 +21,6 @@ const Home = () => {
   const {knowmoremodal , heroPagemodal , createEventmodal , updatemodal , MyEventmodal} = useSelector((state)=> state.modal)
 
   
-
   const categories = ["All", "Conference", "Workshop", "Webinar", "Hackathon", "Meetup"];
 
   // Split events into upcoming and past
@@ -29,7 +28,7 @@ const Home = () => {
     const now = new Date();
     const upcoming = [], past = [];
 
-    events.forEach(event => {
+    events.forEach((event) => {
       const eventDate = new Date(event.date);
       if (eventDate >= now) upcoming.push(event);
       else past.push(event);
@@ -45,12 +44,14 @@ const Home = () => {
     const fetchAllEvents = async () => {
       try {
         const response = await getAllEventfunction(dispatch);
-        if (!response) {
-          toast.error("Failed to fetch all events");
-          return;
-        }
-        setAllEvents(response.data);
-        const { upcoming, past } = splitEvents(response.data);
+        console.log("inside function")
+        console.log(response)
+        // if (!response || !response.success || !response.data) {
+        //   toast.error("Failed to fetch all events");
+        //   return;
+        // }
+        setAllEvents(response);
+        const { upcoming, past } = splitEvents(response);
         setUpcoming(upcoming);
         setPast(past);
       } catch (error) {
@@ -91,18 +92,23 @@ const Home = () => {
   }, [category]);
 
   const handleCreateEventClick = () => {
-    if (token) setcreateEventmodal(true);
-    else toast.warning("Login yourself to create Events");
+    if (token) {
+      dispatch(setcreateEventmodal(true)); // <-- dispatch the action
+    } else {
+      toast.warning("Login yourself to create Events");
+    }
   };
 
   const handleMyEventClick = () => {
     if (token) {
-      setMyEventmodal(true);
+      dispatch(setMyEventmodal(true)); // <-- dispatch the action
+    } else {
+      toast.warning("Login first to see your Events");
     }
-    else toast.warning("Login first to see your Events");
   };
 
   const filteredEvents = timeline === "upcoming" ? upcoming : past;
+  console.log(past)
 
   return (
     <div className="min-h-screen bg-orange-50 z-0 relative text-gray-800">

@@ -18,7 +18,7 @@ const Login = () => {
     const callLogin = async()=>{
       try{
         const response = await logInfunction(email,password,dispatch,navigate ); 
-        if(response.data.success){
+        if(response?.data?.success){
           navigate("/");
         }
       }
