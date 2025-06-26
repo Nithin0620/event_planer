@@ -11,7 +11,8 @@ const Knowmoremodal = () => {
    const modalRef = useRef(null); 
   const dispatch = useDispatch();
   const knowmoredata = useSelector((state) => state.modal);
-  const event = knowmoredata;
+  console.log("know more data",knowmoredata.knowmoredata)
+  const event = knowmoredata.knowmoredata;
 
   const handleClose = () => {
     dispatch(setknowmoremodal(false));
@@ -66,7 +67,7 @@ const Knowmoremodal = () => {
           <div className="md:flex gap-8">
             <div>
               <p className="font-medium">Category:</p>
-              <p>{event.category}</p>
+              <p>{event.category.categoryName}</p>
             </div>
             <div>
               <p className="font-medium">Mode:</p>

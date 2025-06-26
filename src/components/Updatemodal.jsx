@@ -5,16 +5,19 @@ import { useForm } from "react-hook-form";
 import { updateEventfunction } from "../services/operations/Event";
 import { getAllEventByIdfunction } from "../services/operations/Event";
 import toast from "react-hot-toast";
+import { setupdatemodal } from "../Reducer/slices/modalSlics";
 
 const Updatemodal = () => {
   const [EventDetail, setEventDatail] = useState(null);
   const dispatch = useDispatch();
-  const updateeventID = useSelector((state) => state.modal);
+  const updateeventID = useSelector((state) => state.modal.updateeventID);
+  console.log("in the update event page :", updateeventID)
 
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
         const response = await getAllEventByIdfunction(updateeventID,dispatch);
+        console.log(response)
         if (response) setEventDatail(response);
       } catch (e) {
         console.log(e);
@@ -35,11 +38,12 @@ const Updatemodal = () => {
   });
 
   const onSubmit = async (data) => {
+    
     try {
       if (JSON.stringify(data) === JSON.stringify(EventDetail)) {
         toast.warning("No changes have been made in the Event Details");
       } else {
-        const response = await updateEventfunction(data,dispatch);
+        const response = await updateEventfunction(data,updateeventID,dispatch);
         if (response) toast.success("Event Updated in the UI");
         else toast.error("Event can't be Updated due to some Problems");
       }
@@ -50,7 +54,7 @@ const Updatemodal = () => {
   };
 
   const handleClose = () => {
-    // Add your close logic here
+    dispatch(setupdatemodal(false));
   };
 
   const categories = ["Tech", "Design", "Business", "Workshop"]; // Sample categories

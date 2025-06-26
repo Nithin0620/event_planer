@@ -5,18 +5,19 @@ require("dotenv").config();
 
 exports.verifyToken = async(req,res,next)=>{
    console.log(req.cookies)
-   const token = 
+   const tokens = 
                   req.cookies.token;
-   if(!token){
-      console.log(token)
+   if(!tokens){
+      console.log(tokens)
       return res.status(401).json({
          success:false,
          message:"Token not found or invalid token"
       })
    }
    try{
-      const decode = jwt.verify(token , process.env.JWT_SECRET);
-
+      console.log(tokens)
+      const decode = jwt.verify(tokens , process.env.JWT_SECRET);
+      console.log(decode)
       req.user = decode;
    }
    catch(e){

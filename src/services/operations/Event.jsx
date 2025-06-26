@@ -98,12 +98,12 @@ export const getAllEventByIdfunction = async(id , dispatch)=>{
    }
 }
 
-export const updateEventfunction = async({id,eventName,description,location,date,time,category,creatorname,mode},dispatch) =>{
+export const updateEventfunction = async({eventName,description,location,date,time,category,creatorname,mode},updateeventID,dispatch) =>{
    const toastID = toast.loading("Loading...");
 
    try{
       dispatch(setLoading(true));
-      if(!id){
+      if(!updateeventID){
          throw new Error("ID is required to Edit/Update event by id ");
       }
 
@@ -115,7 +115,7 @@ export const updateEventfunction = async({id,eventName,description,location,date
          eventName,description,location,date,time,category,mode
       }
 
-      const response = await apiConnector("PUT",`${updateEvent}/${id}`,payload);
+      const response = await apiConnector("PUT",`${updateEvent}/${updateeventID}`,payload);
 
       if (!response?.data?.success){
          toast.warning("Unable to update the event");
