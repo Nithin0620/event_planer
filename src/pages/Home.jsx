@@ -35,6 +35,7 @@ const Home = () => {
   const categories = ["All", "Conference", "Workshop", "Webinar", "Hackathon", "Meetup"];
 
   const splitEvents = (events) => {
+    if (!Array.isArray(events)) return { upcoming: [], past: [] }; // Defensive
     const now = new Date();
     const upcoming = [];
     const past = [];
@@ -54,20 +55,24 @@ const Home = () => {
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
+        // console.log("In fetch all events")
         const response = await getAllEventfunction(dispatch);
-        if (Array.isArray(response?.data)) {
-          setAllEvents(response.data);
+        // console.log(response.data.data)
+        if (Array.isArray(response.data.data)) {
+          setAllEvents(response.data.data);
         } else {
+          setAllEvents([]); // <-- set to empty array, not null
           toast.error("Invalid event data format.");
         }
       } catch (error) {
         console.error("Error fetching events:", error);
+        setAllEvents([]); // <-- set to empty array on error
         toast.error("Error while fetching events");
       }
     };
 
     fetchAllEvents();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -75,18 +80,24 @@ const Home = () => {
         if (category === "All") {
           const { upcoming, past } = splitEvents(allEvents);
           setFilteredEvents(timeline === "upcoming" ? upcoming : past);
+          // return;
         } else {
           const response = await getEventByCategoryfunction(category, dispatch);
-          if (Array.isArray(response?.data)) {
-            const { upcoming, past } = splitEvents(response.data);
+          if (Array.isArray(response)) {
+            const { upcoming, past } = splitEvents(response);
             setFilteredEvents(timeline === "upcoming" ? upcoming : past);
           } else {
-            toast.error("Invalid category event data format.");
+            setFilteredEvents([]); // <-- set to empty array, not null
+            // setAllEvents([]);      // <-- set to empty array, not null
+            // toast.error("Invalid category event data format.");
           }
         }
       } catch (error) {
-        console.error("Error fetching category events:", error);
+        // console.log("Error in the fetchEvents")
+        // console.log(error)
         toast.error("Error while fetching category events");
+        console.error("Error fetching category events:", error);
+        console.log(error)
       }
     };
 
@@ -97,7 +108,7 @@ const Home = () => {
     if (token) {
       dispatch(setcreateEventmodal(true));
     } else if(!token) {
-      toast.error("Login to creat New events",{position:"top-right"});
+      toast.error("Login to creat New events");
     }
   };
 
@@ -105,7 +116,7 @@ const Home = () => {
     if (token) {
       dispatch(setMyEventmodal(true));
     } else if(!token) {
-      toast.error("Login to view your events",{position:"top-right"});
+      toast.error("Login to view your events");
     }
   };
 
@@ -158,7 +169,7 @@ const Home = () => {
 
           {/* Event List */}
           <div className="p-4 space-y-4">
-            {filteredEvents.length > 0 ? (
+            {filteredEvents && filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
                 <EventCard key={index} data={event} />
               ))

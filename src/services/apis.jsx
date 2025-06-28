@@ -12,6 +12,6 @@ export const event = {
    getEventById: `${BASE_URL}/geteventbyid`,
    updateEvent: `${BASE_URL}/updateevent`,
    deleteEvent: `${BASE_URL}/deleteevent`,
-   getEventForCategory: `${BASE_URL}/geteventforcategory`,
+   geteventforcategory: `${BASE_URL}/geteventforcategory`,
    getMyEvent: `${BASE_URL}/getmyevent`,
 };

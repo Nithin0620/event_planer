@@ -6,18 +6,28 @@ import {
   setupdatemodal,
   setUpdateeventID,
 } from "../Reducer/slices/modalSlics";
+import toast from "react-hot-toast";
 
 const EventCard = ({ data }) => {
+  const token  = useSelector((state)=>state.auth.token)
   const dispatch = useDispatch();
   // const updateeventID = useSelector((state) => state.modal);
 
   console.log("at event card");
   console.log(data);
   const handleKnowMoreClick = () => {
+    if(!token){
+      toast.error("Please login first to Know More About the Event");
+      return;
+    }
     dispatch(setknowmoremodal(true));
     dispatch(setknowmoredata(data));
   };
   const handleUpdateClick = () => {
+    if(!token){
+      toast.error("Please login first to update Event Datails");
+      return;
+    }
     console.log("update event handler")
     dispatch(setupdatemodal(true));
     dispatch(setUpdateeventID(data._id));

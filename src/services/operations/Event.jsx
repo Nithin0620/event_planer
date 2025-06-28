@@ -5,7 +5,7 @@ import { event } from "../apis";
 
 import toast from "react-hot-toast"
 
-const {createEvent , getAllEvent , getAllEventById , updateEvent , deleteEvent , getEventByCategory , getMyEvent} = event;
+const {createEvent , getAllEvent , getEventById , updateEvent , deleteEvent , geteventforcategory , getMyEvent} = event;
 
 export const createEventfunction = async ({eventName,description,location,date,time,category,creatorname,mode},dispatch)=>{
    
@@ -56,9 +56,8 @@ export const getAllEventfunction = async(dispatch)=>{
 
       dispatch(setLoading(false));
       // toast.success("AL)
-
-      return response.data
-      ;
+      console.log("int the operation of all Event",response)
+      return response;
 
    }
    catch(e){
@@ -79,17 +78,18 @@ export const getAllEventByIdfunction = async(id , dispatch)=>{
       if(!id){
          throw new Error("ID is required to fetch event by id ");
       }
-      const response = await apiConnector("GET",`${getAllEventById}/${id}`);
+      const response = await apiConnector("GET",`${getEventById}/${id}`);
       if (!response?.data?.success){
          throw new Error("Error occured in fetching event by id ");
       }
-
+      console.log("response:", response);
       dispatch(setLoading(false));
       // toast.success("")
       return response.data;
    }
    catch(e){
       console.log("Error occured in fetching event by id",e);
+      console.log(e)
       toast.error(e.message);
       return { success: false, message: e.message };
    }
@@ -176,20 +176,22 @@ export const getEventByCategoryfunction = async(category , dispatch) => {
          throw new Error("category is required to fetch the event by category");
       }
 
-      const response = await apiConnector("GET",`${getEventByCategory}/${category}`);
+      const response = await apiConnector("GET",`${geteventforcategory}/${category}`);
 
-      if (!response?.data?.success){
-         toast.error("unable to fetch the event by category");
-         throw new Error("Error occured in Fetching the event by category");
+      if (!response){
+         toast.error("No event for this Category");
       }
+      console.log("response for event by category")
+      console.log(response.data.data[0].events)
 
       dispatch(setLoading(false));
       // toast.success("Event Deleted Successfully");
-      return response.data;
+      return response.data.data && response.data.data[0] ? response.data.data[0].events : [];
    }
    catch(e){
+      console.log(e);
       console.log("Error occured in fetching the event by category",e);
-      toast.error(e.message);
+      // toast.error(e.message);
       return { success: false, message: e.message };
    }
    finally{

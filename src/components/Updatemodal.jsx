@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { updateEventfunction } from "../services/operations/Event";
-import { getAllEventByIdfunction } from "../services/operations/Event";
+import { updateEventfunction, getAllEventByIdfunction } from "../services/operations/Event";
 import toast from "react-hot-toast";
 import { setupdatemodal } from "../Reducer/slices/modalSlics";
 
@@ -11,39 +10,43 @@ const Updatemodal = () => {
   const [EventDetail, setEventDatail] = useState(null);
   const dispatch = useDispatch();
   const updateeventID = useSelector((state) => state.modal.updateeventID);
-  console.log("in the update event page :", updateeventID)
 
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
-        const response = await getAllEventByIdfunction(updateeventID,dispatch);
-        console.log(response)
-        if (response) setEventDatail(response);
+        const response = await getAllEventByIdfunction(updateeventID, dispatch);
+        console.log("event details :" , response.data)
+        if (response) setEventDatail(response.data);
       } catch (e) {
         console.log(e);
-        console.log(
-          "error occurred in fetching Event by id in updateEventmodal.jsx"
-        );
+        console.log("error occurred in fetching Event by id in updateEventmodal.jsx");
       }
     };
     fetchAllEvents();
-  }, [updateeventID]);
+  }, [updateeventID, dispatch]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty },
+    reset,
   } = useForm({
-    defaultValues: EventDetail || {},
+    defaultValues: {}, // Start with empty, will reset later
   });
 
+  // Reset form values when EventDetail changes
+  useEffect(() => {
+    if (EventDetail) {
+      reset(EventDetail);
+    }
+  }, [EventDetail, reset]);
+
   const onSubmit = async (data) => {
-    
     try {
       if (JSON.stringify(data) === JSON.stringify(EventDetail)) {
         toast.warning("No changes have been made in the Event Details");
       } else {
-        const response = await updateEventfunction(data,updateeventID,dispatch);
+        const response = await updateEventfunction(data, updateeventID, dispatch);
         if (response) toast.success("Event Updated in the UI");
         else toast.error("Event can't be Updated due to some Problems");
       }
@@ -58,6 +61,17 @@ const Updatemodal = () => {
   };
 
   const categories = ["Tech", "Design", "Business", "Workshop"]; // Sample categories
+
+  // Only render the form after EventDetail is loaded
+  if (!EventDetail) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="bg-[#ffe5b4] w-full max-w-3xl mx-4 rounded-lg shadow-lg flex items-center justify-center min-h-[200px]">
+          <span className="text-orange-800 text-lg">Loading event details...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -89,11 +103,6 @@ const Updatemodal = () => {
               {...register("eventName")}
               className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
-            {errors.eventName && (
-              <span className="text-red-500 text-sm">
-                {errors.eventName.message}
-              </span>
-            )}
           </div>
 
           {/* Description */}
@@ -110,11 +119,6 @@ const Updatemodal = () => {
               {...register("description")}
               className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
-            {errors.description && (
-              <span className="text-red-500 text-sm">
-                {errors.description.message}
-              </span>
-            )}
           </div>
 
           {/* Creator Name */}
@@ -132,11 +136,6 @@ const Updatemodal = () => {
               {...register("creatorname")}
               className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
-            {errors.creatorname && (
-              <span className="text-red-500 text-sm">
-                {errors.creatorname.message}
-              </span>
-            )}
           </div>
 
           {/* Location, Date, Time */}
@@ -152,11 +151,6 @@ const Updatemodal = () => {
                 {...register("location")}
                 className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
-              {errors.location && (
-                <span className="text-red-500 text-sm">
-                  {errors.location.message}
-                </span>
-              )}
             </div>
 
             <div className="flex flex-col space-y-1">
@@ -169,11 +163,6 @@ const Updatemodal = () => {
                 {...register("date")}
                 className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
-              {errors.date && (
-                <span className="text-red-500 text-sm">
-                  {errors.date.message}
-                </span>
-              )}
             </div>
 
             <div className="flex flex-col space-y-1">
@@ -186,11 +175,6 @@ const Updatemodal = () => {
                 {...register("time")}
                 className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
-              {errors.time && (
-                <span className="text-red-500 text-sm">
-                  {errors.time.message}
-                </span>
-              )}
             </div>
           </div>
 
@@ -212,11 +196,6 @@ const Updatemodal = () => {
                   </option>
                 ))}
               </select>
-              {errors.category && (
-                <span className="text-red-500 text-sm">
-                  {errors.category.message}
-                </span>
-              )}
             </div>
 
             <div className="flex flex-col space-y-1">
@@ -230,11 +209,6 @@ const Updatemodal = () => {
                 {...register("mode")}
                 className="p-2 rounded border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
-              {errors.mode && (
-                <span className="text-red-500 text-sm">
-                  {errors.mode.message}
-                </span>
-              )}
             </div>
           </div>
 
@@ -242,12 +216,7 @@ const Updatemodal = () => {
           <div className="pt-4 flex justify-end">
             <button
               type="submit"
-              disabled={!isDirty}
-              className={`px-6 py-2 rounded font-semibold text-white transition-all ${
-                isDirty
-                  ? "bg-orange-500 hover:bg-orange-600"
-                  : "bg-orange-300 cursor-not-allowed"
-              }`}
+              className="px-6 py-2 rounded font-semibold text-white transition-all bg-orange-500 hover:bg-orange-600"
             >
               Update This Event
             </button>
