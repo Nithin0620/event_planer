@@ -3,7 +3,7 @@ const app = express();
 
 require("dotenv").config();
 const cors = require("cors")
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 4000 || 8000
 
 app.use(cors({
   origin: "http://localhost:3000", // your frontend URL
