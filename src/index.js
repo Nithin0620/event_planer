@@ -14,7 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
-      <Toaster reverseOrder={false} />
+      <Toaster />
     </Provider>
   </React.StrictMode>
 );
